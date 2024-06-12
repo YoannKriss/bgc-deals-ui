@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BGC DEALS</title>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/style.css">
+  <script>
+    const selectPlatform = (id) => {
+        const platform = document.getElementById(id)
+        platform.classList.remove('non-selected');
+        platform.classList.add('selected')
+    }
+    const deSelectPlatform = (id) => {
+        const platform = document.getElementById(id)
+        platform.classList.add('non-selected')
+        platform.classList.remove('selected');
+    }
+    const switchPlatform = (id) => {
+    const platformsIds = ['psn-platform-id', 'switch-platform-id', 'steam-platform-id']
+    for (let platformId of platformsIds)
+    {
+        if (id === platformId) selectPlatform(platformId)
+        else deSelectPlatform(platformId)
+    }
+}
+    const addAmount = () => {
+        const priceElement = document.getElementById('price-id')
+        const currentPrice = parseInt(priceElement.innerHTML)
+        const newPrice = currentPrice+20
+        priceElement.innerHTML = newPrice
+    }
+    const subAmount = () => {
+        const priceElement = document.getElementById('price-id')
+        const currentPrice = parseInt(priceElement.innerHTML)
+        const newPrice = currentPrice-20
+        priceElement.innerHTML = newPrice
+    }
+  </script>
+</head>
+<body>
+    <header>
+        <h1>BGC DEALS</h1>
+        <img src="assets/bgc.png">
+        <h2>INSTANT - DELIVERY</h2>
+        <h3>Enhance your gaming experience</h3>
+    </header>
+    <main>
+        <div class="platform-switcher">
+            <button class="selected" id="psn-platform-id" onclick="switchPlatform(id)">
+                <img src="assets/psn.png" alt="psn-icon" srcset="">
+            </button>
+            <button class="non-selected" onclick="switchPlatform(id)" id="switch-platform-id">
+                <img src="assets/psn.png" alt="psn-icon" srcset="">
+            </button>
+            <button class="non-selected" id="steam-platform-id" onclick="switchPlatform(id)">
+                <img src="assets/psn.png" alt="psn-icon" srcset="">
+            </button>
+        </div>
+        <div class="card">
+            <div class="card-header"></div>            
+            <img src="assets/psn.png" alt="psn-icon" srcset="">
+            <h2>FRANCE</h2>
+        </div>
+        <div class='purchase-section'>
+            <h2 style="text-align: center;">Value :</h2>
+            <div class="value-updater">
+                <button type="button" onclick="subAmount()">-</button>
+                <h2 id="price-id">20</h2>
+                <button type="button" onclick="addAmount()">+</button>
+            </div>
+            <div class="price-section">
+                <div class="normal-price-container">
+                    <h2 class="normal-price">24000 XOF</h2>                    
+                </div>
+                <div class="actual-price-container">
+                    <h2>Total:</h2>
+                    <h2>16500 XOF</h2>
+                </div>
+            </div>
+            <form action="">
+                <input type="email" name="" id="" placeholder="my-email@email.com">
+                <button type="submit">Checkout <span style="text-align: right;font-size: medium;">></span></button>    
+            </form>
+        </div>
+    </main>
+  <footer>
+    <p>&copy; 2024 My Project</p>
+  </footer>
+  <script src="scripts/main.js"></script>
+</body>
+</html>

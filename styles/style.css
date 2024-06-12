@@ -1,0 +1,153 @@
+body {
+    font-family: 'VT323', monospace;
+    background-image: url('../assets/bg..jpg');
+    letter-spacing: 2px;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+}
+
+h2 {
+    font-weight: normal;
+}
+
+
+header h3 {
+    font-weight: normal;
+}
+header h1 {
+    font-size: large;
+    font-size:80px;
+    font-weight:500;
+}
+
+.price-section {
+    width: 100%;
+}
+
+.normal-price-container {
+    width:100%;
+    gap: 0px;
+}
+
+.actual-price-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.normal-price {
+    text-align: right;
+    text-decoration: line-through;
+}
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+    color: white;
+}
+
+.platform-switcher {
+    display:flex;
+    gap: 30px;
+}
+
+.platform-switcher button {
+    border-radius: 5px;
+    width: 75px;
+    border-width: 0; 
+}
+
+.selected {
+    box-shadow: 0px 1px 25.2px 6px rgb(63, 0, 113);
+    background-color: rgb(63, 0, 113);
+}
+
+.non-selected {
+    background-color: rgb(24,0,43);
+}
+.card {
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    background-color: rgb(63, 0, 113);
+    margin-top: 10px;
+    padding-left: 60px;
+    padding-right: 60px;
+    padding-bottom: 70px;
+    margin-top: 50px;
+}
+
+.card-header {
+    width: 100px;
+    margin-top: 20px;
+    height: 30px;
+    border-radius: 20px;
+    border-width: 1;
+    align-self: center;
+    background-color: black;
+}
+
+.card img {
+    margin-top: 50px;
+}
+
+.card h2 {
+    text-align: left;
+    font-size: 50px;
+}
+
+.value-updater {
+    display: flex;
+    justify-content: center;
+    gap: 20px
+}
+
+.value-updater h2 {
+    background-color: rgb(63, 0, 113);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.value-updater button {
+    font-size: 40px;
+    color: white;
+    background-color: transparent;
+    border-width: 0;
+}
+form {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 50px;
+}
+form input {
+    width: 100%;
+    padding: 20px;
+    border-radius: 30px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-width: 0px;
+    margin-left: 100px;
+    margin-right: 100px;
+    color: white;
+    width: 80%;
+}
+
+.purchase-section {
+    width: 100%;
+}
+
+form button {
+    background-color: rgb(63, 0, 113);
+    width: 90%;
+    padding: 20px;
+    border-width: 0px;
+    border-radius: 10px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+}
