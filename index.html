@@ -66,7 +66,7 @@
     }
 
     const getCardUnitPrice = async (platform) => {
-        const res = await fetch('http://localhost:3000/unit')
+        const res = await fetch('https://bgc-deals-server.onrender.com/unit')
         const resJson = await res.json()
         const price = resJson.unit
         const unitCostDocument = document.getElementById('unit-cost-id')
@@ -80,10 +80,14 @@
     const buyCards = async () => {
         const amountDocument = document.getElementById('price-id')
         const costDocument = document.getElementById('cost-id')
+        const loadingDocument = document.getElementById('loading-id')
+        const checkoutDocument = document.getElementById('checkout-id')
+        checkoutDocument.style.display = "none";
+        loadingDocument.style.display = "block";
 
         const amount = parseInt(amountDocument.innerHTML) / parseInt(20)
         const cost = parseInt(costDocument.innerHTML)
-        fetch('http://localhost:3000/buy', {
+        fetch('https://bgc-deals-server.onrender.com/buy', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -92,20 +96,17 @@
                 amount: amount,
                 price: cost
             }),
-            redirect:"follow",
             })
             .then(response => {
-                if (response.status === 302) {
+                if (response.status === 200) {
                     return response.json().then(data => {
-                    window.open(response.headers.get('Location'), '_blank');
-                    return data;
+                        window.location.href = data.url
+                        checkoutDocument.style.display = "block";
+                        loadingDocument.style.display = "none";
                     });
                 } else {
-                    return response.json();
+                    console.error("An error occured");
                 }
-            })
-            .then(data => {
-            console.log(data);
             })
             .catch(error => {
             console.error('Error:', error);
@@ -182,9 +183,9 @@
                 </div>
             </div>
             <form onsubmit="event.preventDefault();buyCards()">
-                <input type="email" name="" id="" placeholder="my-email@email.com">
-                <button type="submit">Checkout <span style="text-align: right;font-size: medium;">></span></button>    
-            </form>
+                <input type="email" name="" id="email-id" placeholder="my-email@email.com">
+                <button type="submit" id="checkout-id">Checkout <span style="text-align: right;font-size: medium;">></span>  </button>    
+                <span style="text-align: center; display: none;" id="loading-id">Loading...</span>           </form>
         </div>
     </main>
   <footer>
