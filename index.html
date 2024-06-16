@@ -28,6 +28,15 @@
             'epic-platform-id' : 'assets/epic.png',
             'steam-platform-id' : 'assets/steam.png',
         }
+            const checkoutDocument = document.getElementById('checkout-id')
+            const unavailableDocument = document.getElementById('unavailable-id')
+        if (id != 'psn-platform-id') {
+            checkoutDocument.style.display = "none";
+            unavailableDocument.style.display = "block";
+        } else {
+            checkoutDocument.style.display = "block";
+            unavailableDocument.style.display = "none";
+        }
         for (let platformId of platformsIds)
         {
             if (id === platformId) selectPlatform(platformId)
@@ -105,11 +114,15 @@
                         loadingDocument.style.display = "none";
                     });
                 } else {
+                        checkoutDocument.style.display = "block";
+                        loadingDocument.style.display = "none";
                     console.error("An error occured");
                 }
             })
             .catch(error => {
-            console.error('Error:', error);
+                checkoutDocument.style.display = "block";
+                        loadingDocument.style.display = "none";
+        console.error('Error:', error);
             });
 }
 
@@ -185,12 +198,15 @@
             <form onsubmit="event.preventDefault();buyCards()">
                 <input type="email" name="" id="email-id" placeholder="my-email@email.com">
                 <button type="submit" id="checkout-id">Checkout <span style="text-align: right;font-size: medium;">></span>  </button>    
-                <span style="text-align: center; display: none;" id="loading-id">Loading...</span>           </form>
+                <span style="text-align: center; display: none;" id="loading-id">Loading...</span>           
+                <span style="text-align: center; display: none;" id="unavailable-id">Currently Unavailable</span>
+            </form>
         </div>
-    </main>
-  <footer>
-    <p>&copy; 2024 BGC DEALS</p>
-  </footer>
+        <footer>
+            <p>&copy; 2024 BGC DEALS</p>
+            <p>+22997450404 / krissyoannh@gmail.com</p>
+          </footer>
+            </main>
   <script src="scripts/main.js"></script>
 </body>
 </html>
