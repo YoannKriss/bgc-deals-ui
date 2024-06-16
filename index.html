@@ -7,6 +7,10 @@
   <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/style.css">
   <script>
+    const updateType = {
+        incr: 0,
+        decr: 1
+    }
     const selectPlatform = (id) => {
         const platform = document.getElementById(id)
         platform.classList.remove('non-selected');
@@ -18,13 +22,20 @@
         platform.classList.remove('selected');
     }
     const switchPlatform = (id) => {
-    const platformsIds = ['psn-platform-id', 'switch-platform-id', 'steam-platform-id']
-    for (let platformId of platformsIds)
-    {
-        if (id === platformId) selectPlatform(platformId)
-        else deSelectPlatform(platformId)
+        const platformsIds = ['psn-platform-id', 'epic-platform-id', 'steam-platform-id']
+        const assets = {
+            'psn-platform-id' : 'assets/psn.png',
+            'epic-platform-id' : 'assets/epic.png',
+            'steam-platform-id' : 'assets/steam.png',
+        }
+        for (let platformId of platformsIds)
+        {
+            if (id === platformId) selectPlatform(platformId)
+            else deSelectPlatform(platformId)
+        }
+        const cardItem = document.getElementById('card-icon-id')
+        cardItem.attributes.getNamedItem('src').value = assets[id];
     }
-}
     const addAmount = () => {
         const priceElement = document.getElementById('price-id')
         const currentPrice = parseInt(priceElement.innerHTML)
@@ -37,9 +48,73 @@
         const newPrice = currentPrice-20
         priceElement.innerHTML = newPrice
     }
+
+    const updateCost = async () => {
+        const item = document.getElementById('cost-id')
+        const amount = parseInt(document.getElementById('price-id').innerHTML)
+        const unit = parseInt(document.getElementById('unit-cost-id').innerHTML)
+        const cost = (unit * amount) / 20
+
+        const normalPriceItem = document.getElementById('normal-price-id')
+        normalPriceItem.innerHTML = `${parseInt((cost * 0.2)) + parseInt(cost)} XOF`
+        item.innerHTML = `${cost} XOF`
+    }
+    const updateAmount = async (type) => {
+        if (type === updateType.incr) addAmount()
+        if (type === updateType.decr) subAmount()
+        await updateCost()
+    }
+
+    const getCardUnitPrice = async (platform) => {
+        const res = await fetch('http://localhost:3000/unit')
+        const resJson = await res.json()
+        const price = resJson.unit
+        const unitCostDocument = document.getElementById('unit-cost-id')
+        const costDocument = document.getElementById('cost-id')
+        unitCostDocument.innerHTML = price
+        costDocument.innerHTML = `${price} XOF`
+        const normalPriceItem = document.getElementById('normal-price-id')
+        const normalPrice = parseInt((price * 0.2)) + parseInt(price)
+        normalPriceItem.innerHTML = `${normalPrice} XOF`
+    }
+    const buyCards = async () => {
+        const amountDocument = document.getElementById('price-id')
+        const costDocument = document.getElementById('cost-id')
+
+        const amount = parseInt(amountDocument.innerHTML) / parseInt(20)
+        const cost = parseInt(costDocument.innerHTML)
+        fetch('http://localhost:3000/buy', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                amount: amount,
+                price: cost
+            }),
+            redirect:"follow",
+            })
+            .then(response => {
+                if (response.status === 302) {
+                    return response.json().then(data => {
+                    window.open(response.headers.get('Location'), '_blank');
+                    return data;
+                    });
+                } else {
+                    return response.json();
+                }
+            })
+            .then(data => {
+            console.log(data);
+            })
+            .catch(error => {
+            console.error('Error:', error);
+            });
+}
+
   </script>
 </head>
-<body>
+<body onload="getCardUnitPrice()">
     <header>
         <h1>BGC DEALS</h1>
         <img src="assets/bgc.png">
@@ -47,46 +122,73 @@
         <h3>Enhance your gaming experience</h3>
     </header>
     <main>
+        <div class="cards-container">
+            <img src="assets/clap.png" alt="" srcset="">
+            <h2>HERE ARE YOUR CODES :</h2>
+            <ul id="cards-list-container">
+                <li>ABCD-EFGH-IJKL</li>
+                <li>ABCD-EFGH-IJKL</li>
+                <li>ABCD-EFGH-IJKL</li>
+                <li>ABCD-EFGH-IJKL</li>
+                <li>ABCD-EFGH-IJKL</li>
+                <li>ABCD-EFGH-IJKL</li>
+                <li>ABCD-EFGH-IJKL</li>
+                <li>ABCD-EFGH-IJKL</li>
+                <li>ABCD-EFGH-IJKL</li>
+                <li>ABCD-EFGH-IJKL</li>
+                <li>ABCD-EFGH-IJKL</li>
+                <li>ABCD-EFGH-IJKL</li>
+                <li>ABCD-EFGH-IJKL</li>
+                <li>ABCD-EFGH-IJKL</li>
+                <li>ABCD-EFGH-IJKL</li>
+                <li>ABCD-EFGH-IJKL</li>
+                <li>ABCD-EFGH-IJKL</li>
+                <li>ABCD-EFGH-IJKL</li>
+                <li>ABCD-EFGH-IJKL</li>
+                <li>ABCD-EFGH-IJKL</li>
+            </ul>
+        </div>
         <div class="platform-switcher">
             <button class="selected" id="psn-platform-id" onclick="switchPlatform(id)">
                 <img src="assets/psn.png" alt="psn-icon" srcset="">
             </button>
-            <button class="non-selected" onclick="switchPlatform(id)" id="switch-platform-id">
-                <img src="assets/psn.png" alt="psn-icon" srcset="">
+            <button class="non-selected" onclick="switchPlatform(id)" id="epic-platform-id">
+                <img src="assets/epic.png" alt="psn-icon" srcset="">
             </button>
             <button class="non-selected" id="steam-platform-id" onclick="switchPlatform(id)">
-                <img src="assets/psn.png" alt="psn-icon" srcset="">
+                <img src="assets/steam.png" alt="psn-icon" srcset="">
             </button>
         </div>
         <div class="card">
             <div class="card-header"></div>            
-            <img src="assets/psn.png" alt="psn-icon" srcset="">
-            <h2>FRANCE</h2>
+            <img src="assets/psn.png" id="card-icon-id"  alt="psn-icon" srcset="">
+            <h2 style="color: black;">FRANCE</h2>
         </div>
         <div class='purchase-section'>
             <h2 style="text-align: center;">Value :</h2>
             <div class="value-updater">
-                <button type="button" onclick="subAmount()">-</button>
+                <button type="button" onclick="updateAmount(updateType.decr)">-</button>
                 <h2 id="price-id">20</h2>
-                <button type="button" onclick="addAmount()">+</button>
+                <button type="button" onclick="updateAmount(updateType.incr)">+</button>
             </div>
             <div class="price-section">
                 <div class="normal-price-container">
-                    <h2 class="normal-price">24000 XOF</h2>                    
+                    <h2 class="normal-price" id="normal-price-id"></h2>                    
                 </div>
                 <div class="actual-price-container">
                     <h2>Total:</h2>
-                    <h2>16500 XOF</h2>
+                    <h2 id="cost-id"></h2>
+                    <h2 style='display: none;' id="unit-cost-id"></h2>
                 </div>
             </div>
-            <form action="">
+            <form onsubmit="event.preventDefault();buyCards()">
                 <input type="email" name="" id="" placeholder="my-email@email.com">
                 <button type="submit">Checkout <span style="text-align: right;font-size: medium;">></span></button>    
             </form>
         </div>
     </main>
   <footer>
-    <p>&copy; 2024 My Project</p>
+    <p>&copy; 2024 BGC DEALS</p>
   </footer>
   <script src="scripts/main.js"></script>
 </body>
