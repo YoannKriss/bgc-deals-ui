@@ -75,16 +75,23 @@
     }
 
     const getCardUnitPrice = async (platform) => {
-        const res = await fetch('https://bgc-deals-server.onrender.com/unit')
-        const resJson = await res.json()
-        const price = resJson.unit
-        const unitCostDocument = document.getElementById('unit-cost-id')
+        try {
+
+            const res = await fetch('https://bgc-deals-server.onrender.com/unit')
+            const resJson = await res.json()
+            const price = resJson.unit
+            const unitCostDocument = document.getElementById('unit-cost-id')
         const costDocument = document.getElementById('cost-id')
         unitCostDocument.innerHTML = price
         costDocument.innerHTML = `${price} XOF`
         const normalPriceItem = document.getElementById('normal-price-id')
         const normalPrice = parseInt((price * 0.2)) + parseInt(price)
         normalPriceItem.innerHTML = `${normalPrice} XOF`
+        } catch(err) {
+                        const alertBoxDocument = document.getElementById("alert-box-id")
+                        alertBoxDocument.style.display = 'flex'
+
+        }
     }
     const buyCards = async () => {
         const amountDocument = document.getElementById('price-id')
@@ -116,7 +123,8 @@
                 } else {
                         checkoutDocument.style.display = "block";
                         loadingDocument.style.display = "none";
-                    console.error("An error occured");
+                        const alertBoxDocument = document.getElementById("alert-box-id")
+                        alertBoxDocument.style.display = 'flex'
                 }
             })
             .catch(error => {
@@ -124,7 +132,13 @@
                         loadingDocument.style.display = "none";
         console.error('Error:', error);
             });
-}
+
+    }
+
+    const dismissAlertBox = () => {
+        const alertBoxDocument = document.getElementById("alert-box-id")
+        alertBoxDocument.style.display = "none";
+    }
 
   </script>
 </head>
@@ -136,31 +150,11 @@
         <h3>Enhance your gaming experience</h3>
     </header>
     <main>
-        <div class="cards-container">
-            <img src="assets/clap.png" alt="" srcset="">
-            <h2>HERE ARE YOUR CODES :</h2>
-            <ul id="cards-list-container">
-                <li>ABCD-EFGH-IJKL</li>
-                <li>ABCD-EFGH-IJKL</li>
-                <li>ABCD-EFGH-IJKL</li>
-                <li>ABCD-EFGH-IJKL</li>
-                <li>ABCD-EFGH-IJKL</li>
-                <li>ABCD-EFGH-IJKL</li>
-                <li>ABCD-EFGH-IJKL</li>
-                <li>ABCD-EFGH-IJKL</li>
-                <li>ABCD-EFGH-IJKL</li>
-                <li>ABCD-EFGH-IJKL</li>
-                <li>ABCD-EFGH-IJKL</li>
-                <li>ABCD-EFGH-IJKL</li>
-                <li>ABCD-EFGH-IJKL</li>
-                <li>ABCD-EFGH-IJKL</li>
-                <li>ABCD-EFGH-IJKL</li>
-                <li>ABCD-EFGH-IJKL</li>
-                <li>ABCD-EFGH-IJKL</li>
-                <li>ABCD-EFGH-IJKL</li>
-                <li>ABCD-EFGH-IJKL</li>
-                <li>ABCD-EFGH-IJKL</li>
-            </ul>
+        <div id="alert-box-id" class="alert-box-container">
+            <h3>An error occured. Try later</h3>
+            <button style="background-color: transparent;border-width: 0px;" onclick="dismissAlertBox()">
+                <h3 style="color: white;">&#x2715;</h3>
+            </button>
         </div>
         <div class="platform-switcher">
             <button class="selected" id="psn-platform-id" onclick="switchPlatform(id)">
