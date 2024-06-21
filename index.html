@@ -74,6 +74,12 @@
         await updateCost()
     }
 
+    const blockAllActions = () => {
+        const checkoutDocument = document.getElementById('checkout-id')
+        const unavailableDocument = document.getElementById('unavailable-id')
+        checkoutDocument.style.display = "none";
+        unavailableDocument.style.display = "block";
+    }
     const getCardUnitPrice = async (platform) => {
         try {
 
@@ -142,7 +148,7 @@
 
   </script>
 </head>
-<body onload="getCardUnitPrice()">
+<body onload="blockAllActions();getCardUnitPrice()">
     <header>
         <h1>BGC DEALS</h1>
         <img src="assets/bgc.png">
